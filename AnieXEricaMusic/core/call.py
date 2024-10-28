@@ -665,9 +665,7 @@ class Call(PyTgCalls):
                 print(f"Error in participant handler: {e}")
 '''
 
-        @self.one.on_update(
-    fl.call_participant(GroupCallParticipant.Action.JOINED),
-)
+        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED),)
         async def participant_handler(_: PyTgCalls, update: Update):
             print(f'Participant joined in {update.chat_id}', update)
 
