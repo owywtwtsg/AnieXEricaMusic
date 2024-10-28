@@ -206,8 +206,8 @@ class Call(PyTgCalls):
                 video_parameters=video_stream_quality,
                 additional_ffmpeg_parameters=f"-ss {played} -to {duration}",
             )
-            if playing[0]["streamtype"] == "video"
-            else stream = MediaStream(
+        if playing[0]["streamtype"] == "video"
+        else stream = MediaStream(
                 out, 
                 audio_parameters=audio_stream_quality,
                 additional_ffmpeg_parameters=f"-ss {played} -to {duration}",
@@ -284,7 +284,6 @@ class Call(PyTgCalls):
                 dditional_ffmpeg_parameters=f"-ss {to_seek} -to {duration}",
                 video_flags=MediaStream.IGNORE,
             )
-        #)
         await assistant.change_stream(chat_id, stream)
 
     async def stream_call(self, link):
