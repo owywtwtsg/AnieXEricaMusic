@@ -6,14 +6,7 @@ from pytgcalls.exceptions import (
     NoActiveGroupCall,
     TelegramServerError,
 )
-from pytgcalls.types import (
-    GroupCallParticipant, 
-    ChatUpdate, 
-    MediaStream, 
-    Update, 
-    JoinedGroupCallParticipant, 
-    LeftGroupCallParticipant,
-)
+from pytgcalls.types import *
 from pytgcalls.exceptions import AlreadyJoinedError, NoActiveGroupCall, TelegramServerError
 from pytgcalls.types.stream import StreamAudioEnded
 import asyncio
