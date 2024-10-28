@@ -615,12 +615,17 @@ class Call(PyTgCalls):
             await self.stop_stream(chat_id)
 
 
-        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        async def group_call_update_handler(client, update: Update):
+        @self.one.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.two.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.three.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.four.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.five.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        async def group_call_update_handler(client, update: GroupCallParticipant):
             chat_id = update.chat_id
             user_id = update.user_id
             try:
                 user = await app.get_users(user_id)
+                chat = await app.get_chat(chat_id)
                 user_mention = user.mention
                 chat_title = chat.title
                 await app.send_message(
