@@ -638,14 +638,14 @@ class Call(PyTgCalls):
                             user = await _.get_users(update.participant.user_id)
                             user_mention = f"{user.mention}"
                         except:
-                            user_mention = f"[User](tg://user?id={update.participant.user_id})"
+                            user_mention = f"[User](tg://user?id={update.participant.mention})"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
 #NewVoiceChatParticipant
 Status:
 • User ID: <code>{update.participant.user_id}</code>
-• Mention: {user_mention}
+• Mention: {update.participant.mention}
 • Muted: <code>{update.participant.muted}</code>
 • Muted by Admin: <code>{update.participant.muted_by_admin}</code>
 • Video: <code>{update.participant.video}</code>
