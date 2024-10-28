@@ -639,8 +639,8 @@ class Call(PyTgCalls):
                     👮 Muted by admin: {participant.muted_by_admin}
                     """
                     await app.send_message(chat_id, info)
-                except Exception as e:
-                    print(f"Error handling update: {e}")
+            except Exception as e:
+                print(f"Error handling update: {e}")
         
         @self.one.on_update(fl.stream_end)
         @self.two.on_update(fl.stream_end)
