@@ -634,19 +634,20 @@ class Call(PyTgCalls):
 
 
 async def handle_joined_voice_chat(self, client, update: Update):
-    if isinstance(update, GroupCallParticipant) and update.joined:
-        chat_id = update.chat_id
-        user_id = update.user_id
-        try:
-            user = await app.get_users(user_id)
-            user_mention = user.mention
-            chat = await app.get_chat(chat_id)
-            chat_title = chat.title
-            await app.send_message(
-                chat_id,
-                f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
-            )
-        except Exception as e:
-            print(f"Error handling joined voice chat: {e}")
+    if isinstance(update, GroupCallParticipant):
+        if update.action == GroupCallParticipant.Action.JOINED:
+            chat_id = update.chat_id
+            user_id = update.user_id
+            try:
+                user = await app.get_users(user_id)
+                user_mention = user.mention
+                chat = await app.get_chat(chat_id)
+                chat_title = chat.title
+                await app.send_message(
+                    chat_id,
+                    f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
+                )
+            except Exception as e:
+                print(f"Error handling joined voice chat: {e}")
     
 AMBOT = Call()
