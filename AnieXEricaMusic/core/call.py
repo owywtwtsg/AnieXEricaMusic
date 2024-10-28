@@ -49,8 +49,6 @@ from strings import get_string
 autoend = {}
 counter = {}
 
-audio_stream_quality = await get_audio_bitrate(chat_id)
-video_stream_quality = await get_video_bitrate(chat_id)
 
 async def _clear_(chat_id):
     db[chat_id] = []
