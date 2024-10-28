@@ -613,12 +613,19 @@ class Call(PyTgCalls):
         @self.five.on_update(fl.chat_update(ChatUpdate.Status.KICKED | ChatUpdate.Status.LEFT_GROUP))
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
-@self.one.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-@self.two.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-@self.three.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-@self.four.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-@self.five.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        async def group_call_update_handler(client, update: GroupCallParticipant):
+
+        @self.one.on_update()
+        @self.two.on_update()
+        @self.three.on_update()
+        async def all_updates(_: PyTgCalls, update: Update):
+        print(update)
+    
+        @self.one.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.two.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.three.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.four.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.five.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        async def participant_handler(_: PyTgCalls, update: Update):
             chat_id = update.chat_id
             participant = update.participant 
             try:
