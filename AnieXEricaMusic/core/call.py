@@ -39,7 +39,7 @@ from AnieXEricaMusic.utils.stream.autoclear import auto_clean
 from AnieXEricaMusic.utils.thumbnails import gen_thumb
 from strings import get_string
 from pytgcalls.types import Update
-from pytgcalls.types.group_call_participant import GroupCallParticipant
+from pytgcalls.types import ChatUpdate, GroupCallParticipant, UpdatedGroupCallParticipant
 
 autoend = {}
 counter = {}
