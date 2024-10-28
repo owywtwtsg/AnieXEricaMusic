@@ -628,17 +628,16 @@ class Call(PyTgCalls):
                     user = await app.get_users(user_id)
                     user_mention = user.mention if isinstance(user, User) else f"User {user_id}"
                     user_name = user.username if isinstance(user, User) else f"None"
-                    info = f"""
-🎙️ New user joined voice chat:
-👤 User: {user_mention}
-👤 Username : @{user_name}
-🆔 User ID: {user_id}
-🔇 Is muted: {participant.muted}
-🎥 Is video on: {participant.video}
-🖥️ Is screen sharing: {participant.screen_sharing}
-📹 Is camera on: {participant.video_camera}
-👮 Muted by admin: {participant.muted_by_admin}
-                """
+                    info = f"""🎙️ New user joined voice chat:
+                    👤 User: {user_mention}
+                    👤 Username : @{user_name}
+                    🆔 User ID: {user_id}
+                    🔇 Is muted: {participant.muted}
+                    🎥 Is video on: {participant.video}
+                    🖥️ Is screen sharing: {participant.screen_sharing}
+                    📹 Is camera on: {participant.video_camera}
+                    👮 Muted by admin: {participant.muted_by_admin}
+                    """
                     await app.send_message(chat_id, info)
                 except Exception as e:
                     print(f"Error handling update: {e}")
