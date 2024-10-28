@@ -639,7 +639,7 @@ class Call(PyTgCalls):
                             user_mention = f"{user.mention}"
                         except:
                             user_mention = f"[User](tg://user?id={update.participant.user_id})"
-                        await app.send_message(
+                        AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
 #NewVoiceChatParticipant
@@ -655,6 +655,10 @@ Status:
 """,
                         disable_web_page_preview=True
                         )
+                        await asyncio.sleep(20)
+                        await AMOP.delete()
+                    except FloodWait as fw:
+                        await asyncio.sleep(int(fw.value))
                     except Exception as e:
                         print(f"Error sending message: {e}")
 
