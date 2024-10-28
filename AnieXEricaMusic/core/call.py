@@ -626,27 +626,38 @@ class Call(PyTgCalls):
 
         @self.one.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
-            print(update)
             if isinstance(update, UpdatedGroupCallParticipant):
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
                         try:
+                            chat = await app.get_chat(update.chat_id)
+                            chat_title = chat.title
+                        except:
+                            chat_title = str(update.chat_id)
+                        try:
                             user = await app.get_users(update.participant.user_id)
-                            user_mention = user.mention
+                            user_mention = f"[{user.first_name}](tg://user?id={update.participant.user_id})"
                         except:
                             user_mention = f"[User](tg://user?id={update.participant.user_id})"
-                        await app.send_message(
+                    await app.send_message(
                     chat_id=update.chat_id,
                     text=f"""
 #NewVoiceChatParticipant
-**Chat ID:** `{update.chat_id}`
-**User:** {update.participant.user.mention if update.participant.user else 'Unknown'}
-**Action:** Joined Voice Chat
-"""
+**Chat:** `{chat_title}`
+**User ID:** `{update.participant.user_id}`
+**Mention:** {user_mention}
+**Status:**
+• Muted: `{update.participant.muted}`
+• Muted by Admin: `{update.participant.muted_by_admin}`
+• Video: `{update.participant.video}`
+• Screen Sharing: `{update.participant.screen_sharing}`
+• Video Camera: `{update.participant.video_camera}`
+• Hand Raised: `{update.participant.raised_hand}`
+• Volume: `{update.participant.volume}%`
+""",
+                    disable_web_page_preview=True
                 )
                     except Exception as e:
                         print(f"Error sending message: {e}")
-                elif update.participant.action == GroupCallParticipant.Action.LEFT:
-                    pass
 
 AMBOT = Call()
