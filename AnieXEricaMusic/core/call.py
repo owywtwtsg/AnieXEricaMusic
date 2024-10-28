@@ -624,10 +624,15 @@ class Call(PyTgCalls):
                 return
             await self.change_stream(client, update.chat_id)
 
-        @self.one.on_update()
+        @self.one.on_update(fl.call_participant())
         async def participant_handler(_: PyTgCalls, update: Update):
-            print(update)
-            if GroupCallParticipant = GroupCallParticipant.Action.JOINED:
-            await app.send_message(chat_id, f"#newUser\nJoined in vc")
+            if isinstance(update, GroupCallParticipant) and update.action == GroupCallParticipant.Action.JOINED:
+                try:
+                    await app.send_message(
+                        chat_id=update.chat_id,
+                        text=f"#NewUser\nSomeone joined the voice chat in {update.chat_id}"
+                        )
+                except Exception as e:
+                    print(f"Error sending message: {e}")
 
 AMBOT = Call()
