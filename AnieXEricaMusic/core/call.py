@@ -618,28 +618,12 @@ class Call(PyTgCalls):
         @self.two.on_update()
         @self.three.on_update()
         async def all_updates(_: PyTgCalls, update: Update):
-          print(update)
-    
-        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        @self.two.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        @self.three.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        @self.four.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        @self.five.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        async def participant_handler(_: PyTgCalls, update: Update):
-            chat_id = update.chat_id
-            participant = update.participant 
             try:
-                if participant and hasattr(participant, 'user_id'):
-                    user = await app.get_users(participant.user_id)
-                    chat = await app.get_chat(chat_id)
-                    user_mention = user.mention
-                    chat_title = chat.title
-                    await app.send_message(
-                        chat_id,
-                        f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
-                        )
+                chat_id = update.chat_id
+                update_str = str(update)
+                await app.send_message(chat_id, f"Update received: {update_str}")
             except Exception as e:
-                print(f"Error handling joined voice chat: {e}")
+                print(f"Error handling update: {e}")
 
         
         @self.one.on_update(fl.stream_end)
