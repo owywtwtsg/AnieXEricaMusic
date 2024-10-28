@@ -630,6 +630,11 @@ class Call(PyTgCalls):
             if isinstance(update, UpdatedGroupCallParticipant):
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
+                        try:
+                            user = await app.get_users(update.participant.user_id)
+                            user_mention = user.mention
+                        except:
+                            user_mention = f"[User](tg://user?id={update.participant.user_id})"
                         await app.send_message(
                     chat_id=update.chat_id,
                     text=f"""
