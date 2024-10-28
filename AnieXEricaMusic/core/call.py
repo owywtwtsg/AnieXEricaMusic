@@ -45,6 +45,12 @@ autoend = {}
 counter = {}
 
 
+async def send_message_callback(chat_id: int, text: str):
+    try:
+        await app.send_message(chat_id, text)
+    except Exception as e:
+        print(f"Error sending message: {e}")
+        
 async def _clear_(chat_id):
     db[chat_id] = []
     await remove_active_video_chat(chat_id)
@@ -640,12 +646,6 @@ class Call(PyTgCalls):
                     """
                     await send_message_callback(chat_id, info)
 
-
-async def send_message_callback(chat_id: int, text: str):
-    try:
-        await app.send_message(chat_id, text)
-    except Exception as e:
-        print(f"Error sending message: {e}")
         
         @self.one.on_update(fl.stream_end)
         @self.two.on_update(fl.stream_end)
