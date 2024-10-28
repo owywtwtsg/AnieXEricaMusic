@@ -639,7 +639,7 @@ class Call(PyTgCalls):
                             user_mention = f"[{user.first_name}](tg://user?id={update.participant.user_id})"
                         except:
                             user_mention = f"[User](tg://user?id={update.participant.user_id})"
-                    await app.send_message(
+                        await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
 #NewVoiceChatParticipant
