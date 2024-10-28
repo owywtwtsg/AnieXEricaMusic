@@ -619,6 +619,17 @@ class Call(PyTgCalls):
         @self.five.on_update(fl.chat_update(ChatUpdate.Status.KICKED | ChatUpdate.Status.LEFT_GROUP))
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
+        
+        @self.one.on_update(fl.stream_end)
+        @self.two.on_update(fl.stream_end)
+        @self.three.on_update(fl.stream_end)
+        @self.four.on_update(fl.stream_end)
+        @self.five.on_update(fl.stream_end)
+        async def stream_end_handler(client, update: Update):
+            if not isinstance(update, StreamAudioEnded):
+                return
+            await self.change_stream(client, update.chat_id)
+
 
 
         @self.one.on_update()
@@ -645,19 +656,6 @@ class Call(PyTgCalls):
                     👮 Muted by admin: {participant.muted_by_admin}
                     """
                     await send_message_callback(chat_id, info)
-
-        
-        @self.one.on_update(fl.stream_end)
-        @self.two.on_update(fl.stream_end)
-        @self.three.on_update(fl.stream_end)
-        @self.four.on_update(fl.stream_end)
-        @self.five.on_update(fl.stream_end)
-        async def stream_end_handler(client, update: Update):
-            if not isinstance(update, StreamAudioEnded):
-                return
-            await self.change_stream(client, update.chat_id)
-
-
 
         
     
