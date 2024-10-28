@@ -44,12 +44,6 @@ from pytgcalls.types import ChatUpdate, GroupCallParticipant, UpdatedGroupCallPa
 autoend = {}
 counter = {}
 
-
-async def send_message_callback(chat_id: int, text: str):
-    try:
-        await app.send_message(chat_id, text)
-    except Exception as e:
-        print(f"Error sending message: {e}")
         
 async def _clear_(chat_id):
     db[chat_id] = []
@@ -660,3 +654,9 @@ class Call(PyTgCalls):
         
     
 AMBOT = Call()
+
+async def send_message_callback(chat_id: int, text: str):
+    try:
+        await app.send_message(chat_id, text)
+    except Exception as e:
+        print(f"Error sending message: {e}")
