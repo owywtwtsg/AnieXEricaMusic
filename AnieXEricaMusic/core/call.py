@@ -614,13 +614,21 @@ class Call(PyTgCalls):
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
 
-        @self.one.on_update()
-        @self.two.on_update()
-        @self.three.on_update()
-        @self.four.on_update()
-        @self.five.on_update()
+
+        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
         async def group_call_update_handler(client, update: Update):
-            await self.handle_joined_voice_chat(client, update)
+            chat_id = update.chat_id
+            user_id = update.user_id
+            try:
+                user = await app.get_users(user_id)
+                user_mention = user.mention
+                chat_title = chat.title
+                await app.send_message(
+                    chat_id,
+                    f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
+                )
+            except Exception as e:
+                print(f"Error handling joined voice chat: {e}")
         
         @self.one.on_update(fl.stream_end)
         @self.two.on_update(fl.stream_end)
@@ -633,21 +641,5 @@ class Call(PyTgCalls):
             await self.change_stream(client, update.chat_id)
 
 
-async def handle_joined_voice_chat(self, client, update: Update):
-    if isinstance(update, GroupCallParticipant):
-        if update.action == GroupCallParticipant.Action.JOINED:
-            chat_id = update.chat_id
-            user_id = update.user_id
-            try:
-                user = await app.get_users(user_id)
-                user_mention = user.mention
-                chat = await app.get_chat(chat_id)
-                chat_title = chat.title
-                await app.send_message(
-                    chat_id,
-                    f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
-                )
-            except Exception as e:
-                print(f"Error handling joined voice chat: {e}")
     
 AMBOT = Call()
