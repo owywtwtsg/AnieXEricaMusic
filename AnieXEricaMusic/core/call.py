@@ -114,34 +114,34 @@ class Call(PyTgCalls):
         assistant = await group_assistant(self, chat_id)
         try:
             await _clear_(chat_id)
-            await assistant.leave_group_call(chat_id)
+            await assistant.leave_call(chat_id)
         except:
             pass
 
     async def stop_stream_force(self, chat_id: int):
         try:
             if config.STRING1:
-                await self.one.leave_group_call(chat_id)
+                await self.one.leave_call(chat_id)
         except:
             pass
         try:
             if config.STRING2:
-                await self.two.leave_group_call(chat_id)
+                await self.two.leave_call(chat_id)
         except:
             pass
         try:
             if config.STRING3:
-                await self.three.leave_group_call(chat_id)
+                await self.three.leave_call(chat_id)
         except:
             pass
         try:
             if config.STRING4:
-                await self.four.leave_group_call(chat_id)
+                await self.four.leave_call(chat_id)
         except:
             pass
         try:
             if config.STRING5:
-                await self.five.leave_group_call(chat_id)
+                await self.five.leave_call(chat_id)
         except:
             pass
         try:
@@ -235,7 +235,7 @@ class Call(PyTgCalls):
         await remove_active_video_chat(chat_id)
         await remove_active_chat(chat_id)
         try:
-            await assistant.leave_group_call(chat_id)
+            await assistant.leave_call(chat_id)
         except:
             pass
 
@@ -293,12 +293,12 @@ class Call(PyTgCalls):
 
     async def stream_call(self, link):
         assistant = await group_assistant(self, config.LOG_GROUP_ID)
-        await assistant.join_group_call(
+        await assistant.play(
             config.LOG_GROUP_ID,
             MediaStream(link),
         )
         await asyncio.sleep(0.2)
-        await assistant.leave_group_call(config.LOG_GROUP_ID)
+        await assistant.leave_call(config.LOG_GROUP_ID)
 
     async def join_call(
         self,
@@ -334,7 +334,7 @@ class Call(PyTgCalls):
         else:
             MediaStream(link, audio_parameters=audio_stream_quality)
         try:
-            await assistant.join_group_call(
+            await assistant.play(
                 chat_id,
                 stream,
             )
@@ -367,11 +367,11 @@ class Call(PyTgCalls):
             await auto_clean(popped)
             if not check:
                 await _clear_(chat_id)
-                return await client.leave_group_call(chat_id)
+                return await client.leave_call(chat_id)
         except:
             try:
                 await _clear_(chat_id)
-                return await client.leave_group_call(chat_id)
+                return await client.leave_call(chat_id)
             except:
                 return
         else:
