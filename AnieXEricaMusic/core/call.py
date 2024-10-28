@@ -284,8 +284,15 @@ class Call(PyTgCalls):
                 video_parameters=video_stream_quality,
                 additional_ffmpeg_parameters=f"-ss {played} -to {duration}",
             )
-            if mode == "video"
-            else MediaStream(
+            if mode == "video":
+                stream = MediaStream(
+                file_path,
+                audio_parameters=audio_stream_quality,
+                video_parameters=video_stream_quality,
+                additional_ffmpeg_parameters=f"-ss {played} -to {duration}",
+            )
+            else: 
+                MediaStream(
                 file_path, 
                 audio_parameters=audio_stream_quality,
                 dditional_ffmpeg_parameters=f"-ss {to_seek} -to {duration}",
