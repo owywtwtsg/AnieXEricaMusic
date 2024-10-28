@@ -38,7 +38,8 @@ from AnieXEricaMusic.utils.inline.play import stream_markup
 from AnieXEricaMusic.utils.stream.autoclear import auto_clean
 from AnieXEricaMusic.utils.thumbnails import gen_thumb
 from strings import get_string
-from pytgcalls.types import Update, JoinedVoiceChat
+from pytgcalls.types import Update
+from pytgcalls.types.groups import GroupCallParticipant
 
 autoend = {}
 counter = {}
@@ -613,12 +614,12 @@ class Call(PyTgCalls):
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
 
-        @self.one.on_update(fl.joined_voice_chat)
-        @self.two.on_update(fl.joined_voice_chat)
-        @self.three.on_update(fl.joined_voice_chat)
-        @self.four.on_update(fl.joined_voice_chat)
-        @self.five.on_update(fl.joined_voice_chat)
-        async def joined_voice_chat_handler(client, update: Update):
+        @self.one.on_participants_change()
+        @self.two.on_participants_change()
+        @self.three.on_participants_change()
+        @self.four.on_participants_change()
+        @self.five.on_participants_change()
+        async def participants_change_handler(client, update: GroupCallParticipant):
             await self.handle_joined_voice_chat(client, update)
         
         @self.one.on_update(fl.stream_end)
@@ -633,16 +634,19 @@ class Call(PyTgCalls):
 
 
 async def handle_joined_voice_chat(self, client, update: Update):
-    if isinstance(update, JoinedVoiceChat):
+    if isinstance(update, GroupCallParticipant) and update.action == GroupCallParticipant.Action.JOINED:
         chat_id = update.chat_id
         user_id = update.user_id
-        user = await app.get_users(user_id)
-        user_mention = user.mention
-        chat = await app.get_chat(chat_id)
-        chat_title = chat.title
-        await app.send_message(
-            chat_id,
-            f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
-        )
+        try:
+            user = await app.get_users(user_id)
+            user_mention = user.mention
+            chat = await app.get_chat(chat_id)
+            chat_title = chat.title
+            await app.send_message(
+                chat_id,
+                f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
+            )
+        except Exception as e:
+            print(f"Error handling joined voice chat: {e}")
     
 AMBOT = Call()
