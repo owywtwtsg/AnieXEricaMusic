@@ -614,12 +614,12 @@ class Call(PyTgCalls):
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
 
-        @self.one.on_participants_change()
-        @self.two.on_participants_change()
-        @self.three.on_participants_change()
-        @self.four.on_participants_change()
-        @self.five.on_participants_change()
-        async def participants_change_handler(client, update: GroupCallParticipant):
+        @self.one.on_group_call_update()
+        @self.two.on_group_call_update()
+        @self.three.on_group_call_update()
+        @self.four.on_group_call_update()
+        @self.five.on_group_call_update()
+        async def group_call_update_handler(client, update: Update):
             await self.handle_joined_voice_chat(client, update)
         
         @self.one.on_update(fl.stream_end)
@@ -634,7 +634,7 @@ class Call(PyTgCalls):
 
 
 async def handle_joined_voice_chat(self, client, update: Update):
-    if isinstance(update, GroupCallParticipant) and update.action == GroupCallParticipant.Action.JOINED:
+    if isinstance(update, GroupCallParticipant) and update.joined:
         chat_id = update.chat_id
         user_id = update.user_id
         try:
