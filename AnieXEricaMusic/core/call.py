@@ -639,24 +639,9 @@ class Call(PyTgCalls):
                     user = await app.get_users(user_id)
                     user_mention = user.mention if isinstance(user, User) else f"User {user_id}"
                     user_name = user.username if isinstance(user, User) else f"None"
-                    info = f"""🎙️ New user joined voice chat:
-                    👤 User: {user_mention}
-                    👤 Username : @{user_name}
-                    🆔 User ID: {user_id}
-                    🔇 Is muted: {participant.muted}
-                    🎥 Is video on: {participant.video}
-                    🖥️ Is screen sharing: {participant.screen_sharing}
-                    📹 Is camera on: {participant.video_camera}
-                    👮 Muted by admin: {participant.muted_by_admin}
-                    """
-                    await send_message_callback(chat_id, info)
+                    info = f"""🎙️ New user joined voice chat:\n👤 User: {user_mention}\n👤 Username : @{user_name}\n🆔 User ID: {user_id}\n🔇 Is muted: {participant.muted}\n🎥 Is video on: {participant.video}\n🖥️ Is screen sharing: {participant.screen_sharing}\n📹 Is camera on: {participant.video_camera}\n👮 Muted by admin: {participant.muted_by_admin}"""
+                    await app.send_message(chat_id: int, text: str)
 
         
     
 AMBOT = Call()
-
-async def send_message_callback(chat_id: int, text: str):
-    try:
-        await app.send_message(chat_id, text)
-    except Exception as e:
-        print(f"Error sending message: {e}")
