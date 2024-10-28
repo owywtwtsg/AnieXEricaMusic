@@ -614,17 +614,34 @@ class Call(PyTgCalls):
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
 
+
         @self.one.on_update()
         @self.two.on_update()
         @self.three.on_update()
         async def all_updates(_: PyTgCalls, update: Update):
             try:
-                chat_id = update.chat_id
-                update_str = str(update)
-                await app.send_message(chat_id, f"Update received: {update_str}")
-            except Exception as e:
-                print(f"Error handling update: {e}")
-
+                if isinstance(update, UpdatedGroupCallParticipant):
+                    chat_id = update.chat_id
+                    participant = update.participant
+                if participant.action == "Action.JOINED":
+                    user_id = participant.user_id
+                    user = await app.get_users(user_id)
+                    user_mention = user.mention if isinstance(user, User) else f"User {user_id}"
+                    user_name = user.username if isinstance(user, User) else f"None"
+                    info = f"""
+🎙️ New user joined voice chat:
+👤 User: {user_mention}
+👤 Username : @{user_name}
+🆔 User ID: {user_id}
+🔇 Is muted: {participant.muted}
+🎥 Is video on: {participant.video}
+🖥️ Is screen sharing: {participant.screen_sharing}
+📹 Is camera on: {participant.video_camera}
+👮 Muted by admin: {participant.muted_by_admin}
+                """
+                    await app.send_message(chat_id, info)
+                except Exception as e:
+                    print(f"Error handling update: {e}")
         
         @self.one.on_update(fl.stream_end)
         @self.two.on_update(fl.stream_end)
