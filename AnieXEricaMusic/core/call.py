@@ -614,11 +614,11 @@ class Call(PyTgCalls):
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
 
-        @self.one.on_group_call_update()
-        @self.two.on_group_call_update()
-        @self.three.on_group_call_update()
-        @self.four.on_group_call_update()
-        @self.five.on_group_call_update()
+        @self.one.on_update()
+        @self.two.on_update()
+        @self.three.on_update()
+        @self.four.on_update()
+        @self.five.on_update()
         async def group_call_update_handler(client, update: Update):
             await self.handle_joined_voice_chat(client, update)
         
