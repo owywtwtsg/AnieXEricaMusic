@@ -624,11 +624,11 @@ class Call(PyTgCalls):
                 return
             await self.change_stream(client, update.chat_id)
 
-        @self.one.on_update(fl.call_participant())
+        @self.one.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
             print(update)
             if isinstance(update, UpdatedGroupCallParticipant):
-                if update.participant.joined:
+                if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
                         await app.send_message(
                     chat_id=update.chat_id,
@@ -641,7 +641,7 @@ class Call(PyTgCalls):
                 )
                     except Exception as e:
                         print(f"Error sending message: {e}")
-                elif update.participant.left:
+                elif update.participant.action == GroupCallParticipant.Action.LEFT:
                     pass
 
 AMBOT = Call()
