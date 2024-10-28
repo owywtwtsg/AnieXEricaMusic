@@ -483,7 +483,6 @@ class Call(PyTgCalls):
                             videoid,
                             audio_parameters=audio_stream_quality,
                         )
-                )
                 try:
                     await client.change_stream(chat_id, stream)
                 except:
