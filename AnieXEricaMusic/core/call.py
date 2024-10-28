@@ -636,24 +636,22 @@ class Call(PyTgCalls):
                             chat_title = str(update.chat_id)
                         try:
                             user = await _.get_users(update.participant.user_id)
-                            user_mention = f"[{user.first_name}](tg://user?id={update.participant.user_id})"
+                            user_mention = f"{user.mention}"
                         except:
                             user_mention = f"[User](tg://user?id={update.participant.user_id})"
                         await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
 #NewVoiceChatParticipant
-**Chat:** `{chat_title}`
-**User ID:** `{update.participant.user_id}`
-**Mention:** {user_mention}
-**Status:**
-• Muted: `{update.participant.muted}`
-• Muted by Admin: `{update.participant.muted_by_admin}`
-• Video: `{update.participant.video}`
-• Screen Sharing: `{update.participant.screen_sharing}`
-• Video Camera: `{update.participant.video_camera}`
-• Hand Raised: `{update.participant.raised_hand}`
-• Volume: `{update.participant.volume}%`
+Status:
+• User ID: <code>{update.participant.user_id}</code>
+• Mention: {user_mention}
+• Muted: <code>{update.participant.muted}</code>
+• Muted by Admin: <code>{update.participant.muted_by_admin}</code>
+• Video: <code>{update.participant.video}</code>
+• Screen Sharing: <code>{update.participant.screen_sharing}</code>
+• Video Camera: <code>{update.participant.video_camera}</code>
+• Volume: <code>{update.participant.volume}%</code>
 """,
                         disable_web_page_preview=True
                         )
