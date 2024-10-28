@@ -620,11 +620,11 @@ class Call(PyTgCalls):
         async def all_updates(_: PyTgCalls, update: Update):
           print(update)
     
-        @self.one.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.two.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.three.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.four.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.five.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.one.on_update(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.two.on_update(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.three.on_update(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.four.on_update(fl.group_call_update(GroupCallParticipant.Action.JOINED))
+        @self.five.on_update(fl.group_call_update(GroupCallParticipant.Action.JOINED))
         async def participant_handler(_: PyTgCalls, update: Update):
             chat_id = update.chat_id
             participant = update.participant 
