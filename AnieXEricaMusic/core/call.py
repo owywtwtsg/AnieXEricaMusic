@@ -616,11 +616,11 @@ class Call(PyTgCalls):
         @self.five.on_update(fl.chat_update(ChatUpdate.Status.KICKED | ChatUpdate.Status.LEFT_GROUP))
         async def stream_services_handler(_, PyTgCalls, update: Update, chat_id: int):
             await self.stop_stream(chat_id)
-        @self.one.on_stream_end()
-        @self.two.on_stream_end()
-        @self.three.on_stream_end()
-        @self.four.on_stream_end()
-        @self.five.on_stream_end()
+        @self.one.on_update(fl.stream_end)
+        @self.two.on_update(fl.stream_end)
+        @self.three.on_update(fl.stream_end)
+        @self.four.on_update(fl.stream_end)
+        @self.five.on_update(fl.stream_end)
         async def stream_end_handler(client, update: Update):
             if not isinstance(update, StreamAudioEnded):
                 return
