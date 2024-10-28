@@ -14,6 +14,7 @@ import os
 from datetime import datetime, timedelta
 from typing import Union
 from pyrogram import Client
+from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardMarkup
 import config
 from AnieXEricaMusic import LOGGER, YouTube, app
