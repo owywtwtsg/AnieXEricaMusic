@@ -621,6 +621,8 @@ class Call(PyTgCalls):
                 return
             await self.change_stream(client, update.chat_id)
 
+        '''
+
         @self.one.on_participants_change()
         @self.two.on_participants_change()
         @self.three.on_participants_change()
@@ -655,5 +657,5 @@ class Call(PyTgCalls):
                     return
                 autoend[chat_id] = {}
 
-
+'''
 AMBOT = Call()
