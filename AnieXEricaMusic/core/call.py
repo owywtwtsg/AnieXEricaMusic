@@ -624,51 +624,8 @@ class Call(PyTgCalls):
                 return
             await self.change_stream(client, update.chat_id)
 
-'''
-        @self.one.on_update()
-        @self.two.on_update()
-        @self.three.on_update()
-        async def all_updates(_: PyTgCalls, update: Update):
-            try:
-                chat_id = update.chat_id
-                update_str = str(update)
-                await app.send_message(chat_id, f"Update received: {update.chat_id}")
-            except Exception as e:
-                print(f"Error handling update: {e}")
-
-    
-        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        async def participant_handler(_: PyTgCalls, update: Update):
-            try:
-                participant = update.participant
-                user_mention = f"[{participant.user.first_name}](tg://user?id={participant.user.id})"
-                user_name = participant.user.username if participant.user.username else "None"
-                user_id = participant.user.id
-                info = f"""
-🎙️ **New User Joined Voice Chat**
-👤 **User:** {user_mention}
-👤 **Username:** @{user_name}
-🆔 **User ID:** `{user_id}`
-🔇 **Is Muted:** {participant.muted}
-🎥 **Video On:** {participant.video}
-🖥️ **Screen Sharing:** {participant.screen_sharing}
-📹 **Camera On:** {participant.video_camera}
-👮 **Muted by Admin:** {participant.muted_by_admin}
-**Chat ID:** `{update.chat_id}`
-"""
-                await app.send_message(
-                    chat_id=update.chat_id,
-                    text=info,
-                    disable_web_page_preview=True
-                )
-            except Exception as e:
-                print(f"Error in participant handler: {e}")
-'''
-
-        #@self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED),)
-        @self.one.on_update(fl.chat_update(ChatUpdate.Status.JOINED))
+        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED),)
         async def participant_handler(_: PyTgCalls, update: Update):
             print(f'Participant joined in {update.chat_id}', update)
-
 
 AMBOT = Call()
