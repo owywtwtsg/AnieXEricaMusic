@@ -628,7 +628,7 @@ class Call(PyTgCalls):
         async def participant_handler(_: PyTgCalls, update: Update):
             print(update)
             if isinstance(update, UpdatedGroupCallParticipant):
-                if update.participant.joined is not None:
+                if update.participant.joined:
                     try:
                         await app.send_message(
                     chat_id=update.chat_id,
@@ -641,7 +641,7 @@ class Call(PyTgCalls):
                 )
                     except Exception as e:
                         print(f"Error sending message: {e}")
-                elif update.participant.left is not None:
+                elif update.participant.left:
                     pass
 
 AMBOT = Call()
