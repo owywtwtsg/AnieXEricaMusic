@@ -624,8 +624,10 @@ class Call(PyTgCalls):
                 return
             await self.change_stream(client, update.chat_id)
 
-        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED),)
+        @self.one.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
-            print(f'Participant joined in {update.chat_id}', update)
+            print(update)
+            if GroupCallParticipant = GroupCallParticipant.Action.JOINED:
+            await app.send_message(chat_id, f"#newUser\nJoined in vc")
 
 AMBOT = Call()
