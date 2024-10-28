@@ -618,7 +618,7 @@ class Call(PyTgCalls):
         @self.two.on_update()
         @self.three.on_update()
         async def all_updates(_: PyTgCalls, update: Update):
-        print(update)
+          print(update)
     
         @self.one.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
         @self.two.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
