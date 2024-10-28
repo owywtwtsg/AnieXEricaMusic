@@ -627,24 +627,30 @@ class Call(PyTgCalls):
 
 
         @self.one.on_update()
-        @self.two.on_update()
+        @self.two.on_update() 
         @self.three.on_update()
         async def all_updates(_: PyTgCalls, update: Update):
             try:
-                if isinstance(update, UpdatedGroupCallParticipant):
+                if isinstance(update, GroupCallParticipant) and update.status == "joined":
                     chat_id = update.chat_id
-                    participant = update.participant
-                if participant.action == "Action.JOINED":
-                    user_id = participant.user_id
-                    user = await app.get_users(user_id)
-                    user_mention = user.mention if isinstance(user, User) else f"User {user_id}"
-                    user_name = user.username if isinstance(user, User) else f"None"
-                    info = f"""🎙️ New user joined voice chat:\n👤 User: {user_mention}\n👤 Username : @{user_name}\n🆔 User ID: {user_id}\n🔇 Is muted: {participant.muted}\n🎥 Is video on: {participant.video}\n🖥️ Is screen sharing: {participant.screen_sharing}\n📹 Is camera on: {participant.video_camera}\n👮 Muted by admin: {participant.muted_by_admin}"""
-                    try:
-                        await app.send_message(chat_id=chat_id, text=info)
-                    except Exception as e:
-                        print(f"Error sending message: {e}")
+                    user = update.participant
+                    user_mention = f"[{user.name}](tg://user?id={user.user_id})"
+                    user_name = user.username if user.username else "None"
+                    info = f"""
+🎙️ **New User Joined Voice Chat**
+
+👤 **User:** {user_mention}
+👤 **Username:** @{user_name}
+🆔 **User ID:** `{user.user_id}`
+🔇 **Is Muted:** {user.muted}
+🎥 **Video On:** {user.video}
+🖥️ **Screen Sharing:** {user.screen_sharing} 
+📹 **Camera On:** {user.video_camera}
+👮 **Muted by Admin:** {user.muted_by_admin}
+"""
+                    await app.send_message(chat_id, info)
+            
             except Exception as e:
-                print(f"Error in update handler: {e}")
+                print(f"Error handling update: {e}")
     
 AMBOT = Call()
