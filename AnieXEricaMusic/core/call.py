@@ -657,7 +657,7 @@ class Call(PyTgCalls):
 """,
                         disable_web_page_preview=True
                         )
-                except Exception as e:
-                print(f"Error sending message: {e}")
+                    except Exception as e:
+                        print(f"Error sending message: {e}")
 
 AMBOT = Call()
