@@ -635,7 +635,7 @@ class Call(PyTgCalls):
             except Exception as e:
                 print(f"Error handling update: {e}")
 '''
-        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED),)
+        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
         async def participant_handler(_: PyTgCalls, update: Update):
             try:
                 participant = update.participant
