@@ -623,9 +623,7 @@ class Call(PyTgCalls):
             if not isinstance(update, StreamAudioEnded):
                 return
             await self.change_stream(client, update.chat_id)
-        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
-        async def participant_handler(_: PyTgCalls, update: Update):
-            await app.send_message(update.chat_id, f"Participant joined in {update.chat_id}", update)
+
 '''
         @self.one.on_update()
         @self.two.on_update()
@@ -637,7 +635,8 @@ class Call(PyTgCalls):
                 await app.send_message(chat_id, f"Update received: {update.chat_id}")
             except Exception as e:
                 print(f"Error handling update: {e}")
-                
+
+    
         @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
         async def participant_handler(_: PyTgCalls, update: Update):
             try:
@@ -665,6 +664,42 @@ class Call(PyTgCalls):
             except Exception as e:
                 print(f"Error in participant handler: {e}")
 '''
+
+        @self.one.on_update()
+        async def all_updates(_: PyTgCalls, update: Update):
+            try:
+                chat_id = update.chat_id
+                if hasattr(update, 'participant'):
+                    participant = update.participant
+                    try:
+                        user = participant.user
+                        info = f"""
+🎙️ **New User Joined Voice Chat**
+
+👤 **User:** {user.first_name if hasattr(user, 'first_name') else 'Unknown'}
+👤 **Username:** @{user.username if hasattr(user, 'username') else 'None'}
+🆔 **User ID:** `{user.id if hasattr(user, 'id') else 'Unknown'}`
+🔇 **Is Muted:** {participant.muted if hasattr(participant, 'muted') else 'Unknown'}
+🎥 **Video On:** {participant.video if hasattr(participant, 'video') else 'Unknown'}
+🖥️ **Screen Sharing:** {participant.screen_sharing if hasattr(participant, 'screen_sharing') else 'Unknown'}
+📹 **Camera On:** {participant.video_camera if hasattr(participant, 'video_camera') else 'Unknown'}
+👮 **Muted by Admin:** {participant.muted_by_admin if hasattr(participant, 'muted_by_admin') else 'Unknown'}
+
+**Chat ID:** `{chat_id}`
+"""
+                        await app.send_message(
+                            chat_id=chat_id,
+                            text=info,
+                            disable_web_page_preview=True
+                            )
+                    except AttributeError:
+                        update_str = str(update)
+                        await app.send_message(chat_id, f"Update received: {update_str}")
+                else
+                update_str = str(update)
+                await app.send_message(chat_id, f"Update received: {update_str}")
+            except Exception as e:
+                print(f"Error handling update: {e}")
 
 
 AMBOT = Call()
