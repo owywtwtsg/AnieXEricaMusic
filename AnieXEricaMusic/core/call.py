@@ -212,7 +212,7 @@ class Call(PyTgCalls):
                 audio_parameters=audio_stream_quality,
                 additional_ffmpeg_parameters=f"-ss {played} -to {duration}",
             )
-        )
+        #)
         if str(db[chat_id][0]["file"]) == str(file_path):
             await assistant.change_stream(chat_id, stream)
         else:
