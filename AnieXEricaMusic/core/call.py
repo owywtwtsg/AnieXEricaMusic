@@ -615,25 +615,31 @@ class Call(PyTgCalls):
             await self.stop_stream(chat_id)
 
 
-        @self.one.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.two.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.three.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.four.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        @self.five.on_participants_change(fl.group_call_update(GroupCallParticipant.Action.JOINED))
-        async def group_call_update_handler(client, update: GroupCallParticipant):
-            chat_id = update.chat_id
-            user_id = update.user_id
+        @self.one.on_update()
+        async def vc_participant_update(client, update: GroupCallParticipant):
             try:
+                chat_id = update.chat_id
+                user_id = update.user_id
                 user = await app.get_users(user_id)
                 chat = await app.get_chat(chat_id)
-                user_mention = user.mention
+                user_mention = user.mention if user else f"User {user_id}"
                 chat_title = chat.title
-                await app.send_message(
-                    chat_id,
-                    f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
-                )
+                if update.joined:  
+                    await app.send_message(
+                        chat_id,
+                        f"🎙️ {user_mention} joined the voice chat in {chat_title}\n"
+                        f"User ID: `{user_id}`"
+                    )
+                elif update.update_type == UpdateType.PARTICIPANT_LEFT and isinstance(update, UserLeft):
+                    await app.send_message(
+                        chat_id,
+                        f"👋 {user_mention} left the voice chat in {chat_title}\n"
+                        f"User ID: `{user_id}`"
+                    )
+                    
             except Exception as e:
-                print(f"Error handling joined voice chat: {e}")
+                print(f"Error in vc_participant_update: {e}")
+
         
         @self.one.on_update(fl.stream_end)
         @self.two.on_update(fl.stream_end)
