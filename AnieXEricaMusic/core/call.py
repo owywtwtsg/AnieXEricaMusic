@@ -639,7 +639,13 @@ class Call(PyTgCalls):
                     👮 Muted by admin: {participant.muted_by_admin}
                     """
                     await send_message_callback(chat_id, info)
-  
+
+
+async def send_message_callback(chat_id: int, text: str):
+    try:
+        await app.send_message(chat_id, text)
+    except Exception as e:
+        print(f"Error sending message: {e}")
         
         @self.one.on_update(fl.stream_end)
         @self.two.on_update(fl.stream_end)
@@ -652,11 +658,7 @@ class Call(PyTgCalls):
             await self.change_stream(client, update.chat_id)
 
 
-async def send_message_callback(chat_id: int, text: str):
-    try:
-        await app.send_message(chat_id, text)
-    except Exception as e:
-        print(f"Error sending message: {e}")
+
         
     
 AMBOT = Call()
