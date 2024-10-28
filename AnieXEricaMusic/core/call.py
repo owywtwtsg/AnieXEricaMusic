@@ -624,9 +624,9 @@ class Call(PyTgCalls):
                 return
             await self.change_stream(client, update.chat_id)
 
-        @self.one.on_update(fl.call_participant())
+        @self.one.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
-            if isinstance(update, GroupCallParticipant) and update.action == GroupCallParticipant.Action.JOINED:
+            if update.action == call_participant(GroupCallParticipant.Action.JOINED):
                 try:
                     await app.send_message(
                         chat_id=update.chat_id,
