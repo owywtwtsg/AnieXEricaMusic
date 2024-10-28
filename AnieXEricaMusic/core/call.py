@@ -626,6 +626,7 @@ class Call(PyTgCalls):
 
         @self.one.on_update(fl.call_participant())
         async def participant_handler(_: PyTgCalls, update: Update):
+            print(update)
             if isinstance(update, UpdatedGroupCallParticipant):
                 if update.participant.joined is not None:
                     try:
