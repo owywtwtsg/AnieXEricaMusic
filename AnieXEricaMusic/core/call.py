@@ -638,8 +638,8 @@ class Call(PyTgCalls):
                         chat_id,
                         f"🎙️ {user_mention} has joined the voice chat in {chat_title}!"
                         )
-    except Exception as e:
-        print(f"Error handling joined voice chat: {e}")
+            except Exception as e:
+                print(f"Error handling joined voice chat: {e}")
 
         
         @self.one.on_update(fl.stream_end)
