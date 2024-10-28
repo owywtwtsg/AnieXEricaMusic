@@ -630,12 +630,12 @@ class Call(PyTgCalls):
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
                         try:
-                            chat = await app.get_chat(update.chat_id)
+                            chat = await _.get_chat(update.chat_id)
                             chat_title = chat.title
                         except:
                             chat_title = str(update.chat_id)
                         try:
-                            user = await app.get_users(update.participant.user_id)
+                            user = await _.get_users(update.participant.user_id)
                             user_mention = f"[{user.first_name}](tg://user?id={update.participant.user_id})"
                         except:
                             user_mention = f"[User](tg://user?id={update.participant.user_id})"
