@@ -623,6 +623,9 @@ class Call(PyTgCalls):
             if not isinstance(update, StreamAudioEnded):
                 return
             await self.change_stream(client, update.chat_id)
+        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
+        async def participant_handler(_: PyTgCalls, update: Update):
+            await app.send_message(update.chat_id, f"Participant joined in {update.chat_id}", update)
 '''
         @self.one.on_update()
         @self.two.on_update()
@@ -634,7 +637,7 @@ class Call(PyTgCalls):
                 await app.send_message(chat_id, f"Update received: {update.chat_id}")
             except Exception as e:
                 print(f"Error handling update: {e}")
-'''
+                
         @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
         async def participant_handler(_: PyTgCalls, update: Update):
             try:
@@ -661,7 +664,7 @@ class Call(PyTgCalls):
                 )
             except Exception as e:
                 print(f"Error in participant handler: {e}")
-
+'''
 
 
 AMBOT = Call()
