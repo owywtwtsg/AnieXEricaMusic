@@ -324,7 +324,6 @@ class Call(PyTgCalls):
             )
                 if video
                 else MediaStream(link, audio_parameters=audio_stream_quality)
-            )
         try:
             await assistant.join_group_call(
                 chat_id,
