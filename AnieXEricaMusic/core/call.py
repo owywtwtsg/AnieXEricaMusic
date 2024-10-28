@@ -623,34 +623,19 @@ class Call(PyTgCalls):
             if not isinstance(update, StreamAudioEnded):
                 return
             await self.change_stream(client, update.chat_id)
-
-
-
+'''
         @self.one.on_update()
-        @self.two.on_update() 
+        @self.two.on_update()
         @self.three.on_update()
         async def all_updates(_: PyTgCalls, update: Update):
             try:
-                if isinstance(update, GroupCallParticipant) and update.status == "joined":
-                    chat_id = update.chat_id
-                    user = update.participant
-                    user_mention = f"[{user.name}](tg://user?id={user.user_id})"
-                    user_name = user.username if user.username else "None"
-                    info = f"""
-🎙️ **New User Joined Voice Chat**
-
-👤 **User:** {user_mention}
-👤 **Username:** @{user_name}
-🆔 **User ID:** `{user.user_id}`
-🔇 **Is Muted:** {user.muted}
-🎥 **Video On:** {user.video}
-🖥️ **Screen Sharing:** {user.screen_sharing} 
-📹 **Camera On:** {user.video_camera}
-👮 **Muted by Admin:** {user.muted_by_admin}
-"""
-                    await app.send_message(chat_id, info)
-            
+                chat_id = update.chat_id
+                update_str = str(update)
+                await app.send_message(chat_id, f"Update received: {update.chat_id}")
             except Exception as e:
                 print(f"Error handling update: {e}")
-    
+'''
+        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED),)
+        async def participant_handler(_: PyTgCalls, update: Update):
+            await app.send_message(update.chat_id, f"Participant joined in {update.chat_id}", update)
 AMBOT = Call()
