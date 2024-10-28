@@ -635,7 +635,33 @@ class Call(PyTgCalls):
             except Exception as e:
                 print(f"Error handling update: {e}")
 '''
-        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED),)
+        @self.one.on_update(fl.call_participant(GroupCallParticipant.Action.JOINED))
         async def participant_handler(_: PyTgCalls, update: Update):
-            await app.send_message(update.chat_id, f"Participant joined in {update.chat_id}", update)
+            try:
+                participant = update.participant
+                user_mention = f"[{participant.user.first_name}](tg://user?id={participant.user.id})"
+                user_name = participant.user.username if participant.user.username else "None"
+                user_id = participant.user.id
+                info = f"""
+🎙️ **New User Joined Voice Chat**
+👤 **User:** {user_mention}
+👤 **Username:** @{user_name}
+🆔 **User ID:** `{user_id}`
+🔇 **Is Muted:** {participant.muted}
+🎥 **Video On:** {participant.video}
+🖥️ **Screen Sharing:** {participant.screen_sharing}
+📹 **Camera On:** {participant.video_camera}
+👮 **Muted by Admin:** {participant.muted_by_admin}
+**Chat ID:** `{update.chat_id}`
+"""
+                await app.send_message(
+                    chat_id=update.chat_id,
+                    text=info,
+                    disable_web_page_preview=True
+                )
+            except Exception as e:
+                print(f"Error in participant handler: {e}")
+
+
+
 AMBOT = Call()
