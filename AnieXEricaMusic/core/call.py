@@ -285,7 +285,7 @@ class Call(PyTgCalls):
                 dditional_ffmpeg_parameters=f"-ss {to_seek} -to {duration}",
                 video_flags=MediaStream.IGNORE,
             )
-        )
+        #)
         await assistant.change_stream(chat_id, stream)
 
     async def stream_call(self, link):
