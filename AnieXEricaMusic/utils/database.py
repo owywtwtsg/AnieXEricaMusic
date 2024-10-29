@@ -69,7 +69,7 @@ async def get_video_bitrate(chat_id: int) -> str:
         "SD_360p": VideoQuality.SD_360p,
     }.get(mode, VideoQuality.SD_480p)
 
-
+checkvcdb = mongodb.checkvc
 authdb = mongodb.adminauth
 authuserdb = mongodb.authuser
 autoenddb = mongodb.autoend
@@ -106,6 +106,25 @@ pause = {}
 playmode = {}
 playtype = {}
 skipmode = {}
+
+
+async def is_vc_on(chat_id: int) -> bool:
+    chat = await checkvcdb.find_one({"chat_id": chat_id})
+    return chat
+
+
+async def vc_on(chat_id: int):
+    is_vc = await is_vc_on(chat_id)
+    if is_vc:
+        return
+    return await checkvcdb.insert_one({"chat_id": chat_id})
+
+
+async def vc_off(chat_id: int):
+    is_vc = await is_vc_on(chat_id)
+    if not is_vc:
+        return
+    return await checkvcdb.delete_one({"chat_id": chat_id})
 
 
 async def get_assistant_number(chat_id: int) -> str:
