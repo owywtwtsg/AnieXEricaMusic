@@ -13,13 +13,10 @@ from AnieXEricaMusic.utils.thumbnails import gen_thumb
 from config import BANNED_USERS
 
 
-@app.on_message(
-    filters.command(["checkinfo", "checkinfo"]) & filters.group & ~BANNED_USERS
-)
-@AdminRightsCheck
+@app.on_message(filters.command(["vcinfos"]) & filters.group & ~BANNED_USERS)
 async def vcchecks(client, message):
   if len(message.command) != 2:
-        await message.reply_text("Usage: /checkinfo [on/off]")
+        await message.reply_text("Usage: /vcinfos [on/off]")
         return
   status = message.text.split(None, 1)[1].strip()
   status = status.lower()
@@ -39,5 +36,5 @@ async def vcchecks(client, message):
     await vc_off(chat_id)
     await message.reply_text("Disabled vc check System.")
   else:
-    await message.reply_text("Unknown Suffix, Use /checkinfo [on/off]")
+    await message.reply_text("Unknown Suffix, Use /vcinfos [on/off]")
 
