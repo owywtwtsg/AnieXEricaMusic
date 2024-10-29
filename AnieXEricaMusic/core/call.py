@@ -629,7 +629,6 @@ class Call(PyTgCalls):
 
         @self.one.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
-            print(update)
             if isinstance(update, UpdatedGroupCallParticipant):
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
