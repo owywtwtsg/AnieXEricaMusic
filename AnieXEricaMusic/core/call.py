@@ -660,7 +660,7 @@ class Call(PyTgCalls):
                         await asyncio.sleep(20)
                         await AMOP.delete()
                     except Exception as e:
-                        print(f"Error sending message: {e}")
+                        pass
                     
 
 AMBOT = Call()
