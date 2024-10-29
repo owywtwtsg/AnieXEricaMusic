@@ -641,10 +641,14 @@ class Call(PyTgCalls):
                             chat_title = chat.title
                         except:
                             chat_title = str(update.chat_id)
-                        try:
-                            user = await app.get_users(update.participant.user_id)
-                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
-                        except:
+                        if update.chat.type != ChatType.PRIVATE:
+                            try:
+                                user = await app.get_users(update.participant.user_id)
+                                user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
+                            except Exception as e:
+                                print(f"Error retrieving user mention: {e}")
+                                user_mention = f"{user.first_name}"
+                        else:
                             user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
@@ -657,19 +661,6 @@ class Call(PyTgCalls):
                         )
                         await asyncio.sleep(20)
                         await AMOP.delete()
-                        print(f"Screen Sharing: {update.participant.screen_sharing}")
-                        if hasattr(update.participant, 'screen_sharing') and update.participant.screen_sharing:
-                            AMOP = await app.send_message(
-                                chat_id=update.chat_id,
-                                text=f"""#ScreenSharing_On
-                                • User ID: <code>{update.participant.user_id}</code> 
-                                • Mention: {user_mention}
-                                • Screen Sharing: <code>{update.participant.screen_sharing}</code>
-                                """,
-                                disable_web_page_preview=True
-                                )
-                            await asyncio.sleep(20)
-                            await AMOP.delete()
                     except Exception as e:
                         print(f"Error sending message: {e}")
                     
