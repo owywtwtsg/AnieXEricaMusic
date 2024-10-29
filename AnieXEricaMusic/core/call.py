@@ -44,6 +44,7 @@ from pytgcalls.types import ChatUpdate, GroupCallParticipant, UpdatedGroupCallPa
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, ChatPermissions, Message
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
 from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
+from pyrogram.enums import ChatType
 
 autoend = {}
 counter = {}
@@ -640,11 +641,10 @@ class Call(PyTgCalls):
                             chat_title = str(update.chat_id)
                         try:
                             user = await ub.get_users(update.participant.user_id)
-                            id = user.id
-                            ids = await ub.get_users(id)
-                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids}>{ids.first_name}</a>"
-                        except:
-                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids.id}>{ids.first_name}</a>"
+                            if user.chat.type != ChatType.PRIVATE:
+                                user_mention = user.chat.title if (await ub.get_users(user)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
+                            elif:
+                                user_mention = user.chat.title if (await ub.get_users(user)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
