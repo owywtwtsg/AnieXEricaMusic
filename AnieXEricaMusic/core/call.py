@@ -639,9 +639,9 @@ class Call(PyTgCalls):
                             chat_title = str(update.chat_id)
                         try:
                             user = await app.get_users(update.participant.user_id)
-                            user_mention = user.mention if (await app.get_users(user)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
+                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
                         except:
-                            user_mention = user.mention if (await app.get_users(user)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
+                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
