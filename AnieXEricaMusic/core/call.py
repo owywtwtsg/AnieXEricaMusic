@@ -642,14 +642,10 @@ class Call(PyTgCalls):
                             chat_title = chat.title
                         except:
                             chat_title = str(update.chat_id)
-                        if update.chat.type != ChatType.PRIVATE:
-                            try:
-                                user = await app.get_users(update.participant.user_id)
-                                user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
-                            except Exception as e:
-                                print(f"Error retrieving user mention: {e}")
-                                user_mention = f"{user.first_name}"
-                        else:
+                        try:
+                            user = await app.get_users(update.participant.user_id)
+                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
+                        except Exception as e:
                             user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
