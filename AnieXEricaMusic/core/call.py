@@ -659,27 +659,7 @@ class Call(PyTgCalls):
                         await AMOP.delete()
                     except Exception as e:
                         print(f"Error sending message: {e}")
-                    if update.participant.screen_sharing:
-                        try:
-                            try:
-                                user = await app.get_users(update.participant.user_id)
-                                user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
-                            except:
-                                user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
-                            AMOP = await app.send_message(
-                             chat_id=update.chat_id,
-                             text=f"""
-                             #ScreenSharing_On
-                             • User ID: <code>{update.participant.user_id}</code>
-                             • Mention: {user_mention}
-                             • Screen Sharing: <code>{update.participant.screen_sharing}</code>
-                             """,
-                             disable_web_page_preview=True
-                         )
-                            await asyncio.sleep(20)
-                            await AMOP.delete()
-                        except Exception as e:
-                            print(f"Error sending message: {e}")
+                    
 '''
         @self.one.on_update()
         @self.two.on_update()
