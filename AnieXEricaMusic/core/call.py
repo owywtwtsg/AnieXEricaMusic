@@ -634,17 +634,16 @@ class Call(PyTgCalls):
                     try:
                         try:
                             ub = await group_assistant(update.chat.id)
-                            chat = await ub.get_chat(update.chat_id)
                             chat_title = chat.title
                         except:
                             chat_title = str(update.chat_id)
                         try:
-                            user = await ub.get_users(update.participant.user_id)
+                            user = await app.get_users(update.participant.user_id)
                             id = user.id
-                            ids = await ub.get_users(id)
-                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids}>{ids.first_name}</a>"
+                            ids = await app.get_users(id)
+                            user_mention = ids.mention if (await app.get_users(ids)).mention else f"<a href=tg://user?id={ids}>{ids.first_name}</a>"
                         except:
-                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids.id}>{ids.first_name}</a>"
+                            user_mention = ids.mention if (await app.get_users(ids)).mention else f"<a href=tg://user?id={ids.id}>{ids.first_name}</a>"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
