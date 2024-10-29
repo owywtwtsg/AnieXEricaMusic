@@ -651,7 +651,7 @@ class Call(PyTgCalls):
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
-#NewVoiceChatParticipant
+#JᴏɪɴVɪᴅᴇᴏCʜᴀᴛ
 • User ID: <code>{update.participant.user_id}</code> 
 • Mention: {user_mention}
 """,
@@ -662,43 +662,7 @@ class Call(PyTgCalls):
                     except Exception as e:
                         print(f"Error sending message: {e}")
                     
-'''
-        @self.one.on_update()
-        @self.two.on_update()
-        @self.three.on_update()
-        @self.four.on_update()
-        @self.five.on_update()
-        async def participant_handler(_: PyTgCalls, update: Update):
-            if isinstance(update, UpdatedGroupCallParticipant):
-                if update.participant.screen_sharing:
-                    try:
-                        try:
-                            ub = await group_assistant(update.chat.id)
-                            chat_title = chat.title
-                        except:
-                            chat_title = str(update.chat_id)
-                        try:
-                            user = await app.get_users(update.participant.user_id)
-                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
-                        except:
-                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
-                        AMOP = await app.send_message(
-                        chat_id=update.chat_id,
-                        text=f"""
-#ScreenSharing_On
-• User ID: <code>{update.participant.user_id}</code> 
-• Mention: {user_mention}
-• Screen Sharing: <code>{update.participant.screen_sharing}</code>
-""",
-                        disable_web_page_preview=True
-                        )
-                        await asyncio.sleep(20)
-                        await AMOP.delete()
-                    except FloodWait as fw:
-                        await asyncio.sleep(int(fw.value))
-                    except Exception as e:
-                        print(f"Error sending message: {e}")
-'''
+
 AMBOT = Call()
 
 
