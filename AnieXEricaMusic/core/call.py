@@ -41,11 +41,13 @@ from AnieXEricaMusic.utils.thumbnails import gen_thumb
 from strings import get_string
 from pytgcalls.types import Update
 from pytgcalls.types import ChatUpdate, GroupCallParticipant, UpdatedGroupCallParticipant
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, ChatPermissions, Message
+from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
+from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
 
 autoend = {}
 counter = {}
-
-        
+      
 async def _clear_(chat_id):
     db[chat_id] = []
     await remove_active_video_chat(chat_id)
@@ -631,13 +633,16 @@ class Call(PyTgCalls):
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
                         try:
-                            chat = await _.get_chat(update.chat_id)
+                            ub = await group_assistant(update.chat.id)
+                            chat = await ub.get_chat(update.chat_id)
                             chat_title = chat.title
                         except:
                             chat_title = str(update.chat_id)
                         try:
-                            user = await _.get_users(update.participant.user_id)
-                            user_mention = user.mention if (await _.get_users(user.id)).mention else f"<a href=tg://user?id={update.participant.user_id}>New User</a>"
+                            user = await ub.get_users(update.participant.user_id)
+                            if user.id.startswith(-100):
+                                await ban(client, update, user.id)
+                            user_mention = user.mention if (await ub.get_users(user.id)).mention else f"<a href=tg://user?id={update.participant.user_id}>New User</a>"
                         except:
                             user_mention = f"<a href=tg://user?id={update.participant.user_id}>New User</a>"
                         AMOP = await app.send_message(
@@ -663,4 +668,53 @@ Status:
                     except Exception as e:
                         print(f"Error sending message: {e}")
 
+
+async def ban(client, update: Update, user.id):
+    chat_id = update.chat.id
+    assistant = await get_assistant(chat_id)
+    ass = await assistant.get_me()
+    assid = ass.id
+    try:
+        peer = await assistant.resolve_peer(chat_id)
+        await assistant.invoke(
+                EditGroupCallParticipant(
+                    call=chat_id,
+                    participant=user.id,
+                    muted=True,
+                    volume=volume * 100,
+                ),
+            )
+    except ChatAdminRequired:
+      try:    
+        await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
+                can_manage_chat=False,
+                can_delete_messages=False,
+                can_manage_video_chats=True,
+                can_restrict_members=False,
+                can_change_info=False,
+                can_invite_users=False,
+                can_pin_messages=False,
+                can_promote_members=False,
+            ),
+        )
+        peer = await assistant.resolve_peer(chat_id)
+        await assistant.invoke(
+                EditGroupCallParticipant(
+                    call=chat_id,
+                    participant=user.id,
+                    muted=True,
+                    volume=volume * 100,
+                ),
+            )
+        await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
+            can_manage_chat=False,
+            can_delete_messages=False,
+            can_manage_video_chats=False,
+            can_restrict_members=False,
+            can_change_info=False,
+            can_invite_users=False,
+            can_pin_messages=False,
+            can_promote_members=False,
+            ),
+        )
 AMBOT = Call()
