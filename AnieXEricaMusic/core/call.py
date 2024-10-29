@@ -724,7 +724,7 @@ class Call(PyTgCalls):
 #videocamera_On
 • User ID: <code>{update.participant.user_id}</code> 
 • Mention: {user_mention}
-• Screen Sharing: <code>{update.participant.video_camera}</code>
+• Video Camera : <code>{update.participant.video_camera}</code>
 """,
                         disable_web_page_preview=True
                         )
