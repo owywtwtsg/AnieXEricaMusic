@@ -661,11 +661,12 @@ class Call(PyTgCalls):
                         print(f"Error sending message: {e}")
                     if update.participant.screen_sharing:
                         try:
-                            user = await app.get_users(update.participant.user_id)
-                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
-                        except:
-                            user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
-                        AMOP = await app.send_message(
+                            try:
+                                user = await app.get_users(update.participant.user_id)
+                                user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
+                           except:
+                               user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
+                           AMOP = await app.send_message(
                             chat_id=update.chat_id,
                             text=f"""
                             #ScreenSharing_On
@@ -677,8 +678,6 @@ class Call(PyTgCalls):
                         )
                         await asyncio.sleep(20)
                         await AMOP.delete()
-                    except FloodWait as fw:
-                        await asyncio.sleep(int(fw.value))
                     except Exception as e:
                         print(f"Error sending message: {e}")
 '''
