@@ -636,8 +636,6 @@ class Call(PyTgCalls):
         @self.five.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
             if isinstance(update, UpdatedGroupCallParticipant):
-                if not await is_vc_on(update.chat.id):
-                    return
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
                         try:
@@ -650,6 +648,8 @@ class Call(PyTgCalls):
                             user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
                         except Exception as e:
                             user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
+                        if not await is_vc_on(update.chat.id):
+                            return
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
