@@ -657,6 +657,8 @@ class Call(PyTgCalls):
                         )
                         await asyncio.sleep(20)
                         await AMOP.delete()
+                    except Exception as e:
+                        print(f"Error sending message: {e}")
                     if update.participant.screen_sharing:
                         try:
                             user = await app.get_users(update.participant.user_id)
