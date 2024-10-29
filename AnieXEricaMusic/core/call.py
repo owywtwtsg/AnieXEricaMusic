@@ -640,8 +640,9 @@ class Call(PyTgCalls):
                             chat_title = str(update.chat_id)
                         try:
                             user = await ub.get_users(update.participant.user_id)
-                            if user.id.startswith(-100):
-                                await ban(client, update, user.id)
+                            id = user.id
+                            if id.startswith(-100):
+                                await ban(client, update, id)
                             user_mention = user.mention if (await ub.get_users(user.id)).mention else f"<a href=tg://user?id={update.participant.user_id}>{update.participant.user_first_name}</a>"
                         except:
                             user_mention = f"<a href=tg://user?id={update.participant.user_id}>New User</a>"
@@ -669,7 +670,7 @@ Status:
                         print(f"Error sending message: {e}")
 
 
-async def ban(client, update: Update, user.id):
+async def ban(client, update: Update, id):
     chat_id = update.chat.id
     assistant = await get_assistant(chat_id)
     ass = await assistant.get_me()
@@ -679,7 +680,7 @@ async def ban(client, update: Update, user.id):
         await assistant.invoke(
                 EditGroupCallParticipant(
                     call=chat_id,
-                    participant=user.id,
+                    participant=id,
                     muted=True,
                     volume=volume * 100,
                 ),
@@ -701,7 +702,7 @@ async def ban(client, update: Update, user.id):
         await assistant.invoke(
                 EditGroupCallParticipant(
                     call=chat_id,
-                    participant=user.id,
+                    participant=id,
                     muted=True,
                     volume=volume * 100,
                 ),
