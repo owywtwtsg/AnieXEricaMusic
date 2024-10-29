@@ -628,6 +628,10 @@ class Call(PyTgCalls):
             await self.change_stream(client, update.chat_id)
 
         @self.one.on_update()
+        @self.two.on_update()
+        @self.three.on_update()
+        @self.four.on_update()
+        @self.five.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
             if isinstance(update, UpdatedGroupCallParticipant):
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
