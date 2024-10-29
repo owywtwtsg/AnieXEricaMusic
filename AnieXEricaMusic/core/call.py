@@ -657,7 +657,8 @@ class Call(PyTgCalls):
                         )
                         await asyncio.sleep(20)
                         await AMOP.delete()
-                        if update.participant.screen_sharing:
+                        print(f"Screen Sharing: {update.participant.screen_sharing}")
+                        if hasattr(update.participant, 'screen_sharing') and update.participant.screen_sharing:
                             AMOP = await app.send_message(
                                 chat_id=update.chat_id,
                                 text=f"""#ScreenSharing_On
