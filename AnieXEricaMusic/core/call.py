@@ -45,7 +45,6 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQ
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
 from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
 from pyrogram.enums import ChatType
-from AnieXEricaMusic.utils.database import is_vc_on, vc_on, vc_off
 
 autoend = {}
 counter = {}
@@ -648,8 +647,6 @@ class Call(PyTgCalls):
                             user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user}>{user.first_name}</a>"
                         except Exception as e:
                             user_mention = user.mention if (await app.get_users(update.participant.user_id)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
-                        if not await is_vc_on(update.chat.id):
-                            return
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
