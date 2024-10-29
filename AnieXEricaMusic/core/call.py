@@ -666,9 +666,9 @@ Status:
                             )
                         await asyncio.sleep(20)
                         await AMOP.delete()
-                except FloodWait as fw:
-                    await asyncio.sleep(int(fw.value))
-                except Exception as e:
-                    pass
+                    except FloodWait as fw:
+                        await asyncio.sleep(int(fw.value))
+                        except Exception as e:
+                            pass
 
 AMBOT = Call()
