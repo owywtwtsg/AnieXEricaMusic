@@ -685,8 +685,7 @@ async def ban(client, update: Update, id):
                     volume=volume * 100,
                 ),
             )
-    except ChatAdminRequired:
-      try:    
+    except ChatAdminRequired:    
         await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
                 can_manage_chat=False,
                 can_delete_messages=False,
