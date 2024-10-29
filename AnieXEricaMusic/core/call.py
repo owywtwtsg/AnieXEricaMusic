@@ -44,7 +44,6 @@ from pytgcalls.types import ChatUpdate, GroupCallParticipant, UpdatedGroupCallPa
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, ChatPermissions, Message
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
 from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
-from pyrogram.enums import ChatType
 
 autoend = {}
 counter = {}
@@ -640,13 +639,15 @@ class Call(PyTgCalls):
                         except:
                             chat_title = str(update.chat_id)
                         try:
-                            ambot = await ub.get_users(update.participant.user_id)
-                            user_mention = ambot.mention if (await ub.get_users(ambot)).mention else f"<a href=tg://user?id={ambot}>{ambot.first_name}</a>"
+                            user = await ub.get_users(update.participant.user_id)
+                            id = user.id
+                            ids = await ub.get_users(id)
+                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids}>{ids.first_name}</a>"
                         except:
-                            user_mention = ambot.mention if (await ub.get_users(ambot)).mention else f"<a href=tg://user?id={ambot}>{ambot.first_name}</a>"
+                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids.id}>{ids.first_name}</a>"
                         AMOP = await app.send_message(
-                            chat_id=update.chat_id,
-                            text=f"""
+                        chat_id=update.chat_id,
+                        text=f"""
 #NewVoiceChatParticipant
 Status:
 • User ID: <code>{update.participant.user_id}</code> 
@@ -659,12 +660,13 @@ Status:
 • Volume: <code>{update.participant.volume}%</code>
 """,
                         disable_web_page_preview=True
-                            )
+                        )
                         await asyncio.sleep(20)
                         await AMOP.delete()
                     except FloodWait as fw:
                         await asyncio.sleep(int(fw.value))
                     except Exception as e:
-                        pass
+                        print(f"Error sending message: {e}")
+
 
 AMBOT = Call()
