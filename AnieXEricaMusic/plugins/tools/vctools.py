@@ -17,7 +17,7 @@ from config import BANNED_USERS
     filters.command(["checkinfo", "checkinfo"]) & filters.group & ~BANNED_USERS
 )
 @AdminRightsCheck
-async def vccheck(cli, message: Message, _, chat_id):
+async def vcchecks(client, message):
   if len(message.command) != 2:
         await message.reply_text("Usage: /checkinfo [on/off]")
         return
