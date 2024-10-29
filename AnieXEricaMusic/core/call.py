@@ -641,12 +641,13 @@ class Call(PyTgCalls):
                             chat_title = str(update.chat_id)
                         try:
                             user = await ub.get_users(update.participant.user_id)
-                            if user.chat.type != ChatType.PRIVATE:
-                                user_mention = user.chat.title if (await ub.get_users(user)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
+                            ambot = await ub.get_users(user.id)
+                            user_mention = ambot.mention if (await ub.get_users(ambot)).mention else f"<a href=tg://user?id={ambot}>{ambot.first_name}</a>"
                         except:
-                            AMOP = await app.send_message(
-                                chat_id=update.chat_id,
-                                text=f"""
+                            user_mention = ambot.mention if (await ub.get_users(ambot)).mention else f"<a href=tg://user?id={ambot}>{ambot.first_name}</a>"
+                        AMOP = await app.send_message(
+                            chat_id=update.chat_id,
+                            text=f"""
 #NewVoiceChatParticipant
 Status:
 • User ID: <code>{update.participant.user_id}</code> 
@@ -658,14 +659,13 @@ Status:
 • Video Camera: <code>{update.participant.video_camera}</code>
 • Volume: <code>{update.participant.volume}%</code>
 """,
-                            disable_web_page_preview=True
-                                )
-                            await asyncio.sleep(20)
-                            await AMOP.delete()
-                    except FloodWait as fw:
-                        await asyncio.sleep(int(fw.value))
-                    except Exception as e:
-                        print(f"Error sending message: {e}")
-
+                        disable_web_page_preview=True
+                            )
+                        await asyncio.sleep(20)
+                        await AMOP.delete()
+                except FloodWait as fw:
+                    await asyncio.sleep(int(fw.value))
+                except Exception as e:
+                    pass
 
 AMBOT = Call()
