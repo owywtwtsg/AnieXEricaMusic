@@ -636,7 +636,7 @@ class Call(PyTgCalls):
         @self.five.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
             if isinstance(update, UpdatedGroupCallParticipant):
-                if not await is_nsfw_on(update.chat.id):
+                if not await is_vc_on(update.chat.id):
                     return
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
