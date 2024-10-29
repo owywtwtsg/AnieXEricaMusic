@@ -641,11 +641,10 @@ class Call(PyTgCalls):
                         try:
                             user = await ub.get_users(update.participant.user_id)
                             id = user.id
-                            if id.startswith(-100):
-                                await ban(client, update, id)
-                            user_mention = user.mention if (await ub.get_users(user.id)).mention else f"<a href=tg://user?id={update.participant.user_id}>{update.participant.user_first_name}</a>"
+                            ids = await ub.get_users(id)
+                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids}>{ids.first_name}</a>"
                         except:
-                            user_mention = f"<a href=tg://user?id={update.participant.user_id}>New User</a>"
+                            user_mention = ids.mention if (await ub.get_users(ids)).mention else f"<a href=tg://user?id={ids.id}>{ids.first_name}</a>"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
@@ -670,51 +669,4 @@ Status:
                         print(f"Error sending message: {e}")
 
 
-async def ban(client, update: Update, id):
-    chat_id = update.chat.id
-    assistant = await get_assistant(chat_id)
-    ass = await assistant.get_me()
-    assid = ass.id
-    try:
-        peer = await assistant.resolve_peer(chat_id)
-        await assistant.invoke(
-                EditGroupCallParticipant(
-                    call=chat_id,
-                    participant=id,
-                    muted=True,
-                    volume=volume * 100,
-                ),
-            )
-    except ChatAdminRequired:    
-        await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
-                can_manage_chat=False,
-                can_delete_messages=False,
-                can_manage_video_chats=True,
-                can_restrict_members=False,
-                can_change_info=False,
-                can_invite_users=False,
-                can_pin_messages=False,
-                can_promote_members=False,
-            ),
-        )
-        peer = await assistant.resolve_peer(chat_id)
-        await assistant.invoke(
-                EditGroupCallParticipant(
-                    call=chat_id,
-                    participant=id,
-                    muted=True,
-                    volume=volume * 100,
-                ),
-            )
-        await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
-            can_manage_chat=False,
-            can_delete_messages=False,
-            can_manage_video_chats=False,
-            can_restrict_members=False,
-            can_change_info=False,
-            can_invite_users=False,
-            can_pin_messages=False,
-            can_promote_members=False,
-            ),
-        )
 AMBOT = Call()
