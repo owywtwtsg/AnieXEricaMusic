@@ -640,11 +640,7 @@ class Call(PyTgCalls):
                         except:
                             chat_title = str(update.chat_id)
                         try:
-                            user = await ub.get_users(update.participant.user_id)
-                        except:
-                            user = await ub.get_users(update.participant.user_id)
-                        try:
-                            ambot = await ub.get_users(user.id)
+                            ambot = await ub.get_users(update.participant.user_id)
                             user_mention = ambot.mention if (await ub.get_users(ambot)).mention else f"<a href=tg://user?id={ambot}>{ambot.first_name}</a>"
                         except:
                             user_mention = ambot.mention if (await ub.get_users(ambot)).mention else f"<a href=tg://user?id={ambot}>{ambot.first_name}</a>"
