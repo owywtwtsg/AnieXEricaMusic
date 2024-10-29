@@ -644,7 +644,6 @@ class Call(PyTgCalls):
                             if user.chat.type != ChatType.PRIVATE:
                                 user_mention = user.chat.title if (await ub.get_users(user)).mention else f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
                         except:
-                                user_mention = f"<a href=tg://user?id={user.id}>{user.first_name}</a>"
                         AMOP = await app.send_message(
                         chat_id=update.chat_id,
                         text=f"""
