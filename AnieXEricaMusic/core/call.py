@@ -657,6 +657,18 @@ class Call(PyTgCalls):
                         )
                         await asyncio.sleep(20)
                         await AMOP.delete()
+                        if update.participant.screen_sharing:
+                            AMOP = await app.send_message(
+                                chat_id=update.chat_id,
+                                text=f"""#ScreenSharing_On
+                                • User ID: <code>{update.participant.user_id}</code> 
+                                • Mention: {user_mention}
+                                • Screen Sharing: <code>{update.participant.screen_sharing}</code>
+                                """,
+                                disable_web_page_preview=True
+                                )
+                            await asyncio.sleep(20)
+                            await AMOP.delete()
                     except Exception as e:
                         print(f"Error sending message: {e}")
                     
