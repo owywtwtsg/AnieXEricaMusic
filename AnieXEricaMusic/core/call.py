@@ -44,6 +44,7 @@ from pytgcalls.types import ChatUpdate, GroupCallParticipant, UpdatedGroupCallPa
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, ChatPermissions, Message
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
 from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
+from pyrogram.enums import ChatType
 
 autoend = {}
 counter = {}
