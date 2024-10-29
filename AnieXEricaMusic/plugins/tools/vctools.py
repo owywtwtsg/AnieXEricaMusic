@@ -14,12 +14,12 @@ from config import BANNED_USERS
 
 
 @app.on_message(
-    filters.command(["checkvc", "checkvc"]) & filters.group & ~BANNED_USERS
+    filters.command(["checkinfo", "checkinfo"]) & filters.group & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def vccheck(cli, message: Message, _, chat_id):
   if len(message.command) != 2:
-        await message.reply_text("Usage: /checkvc [on/off]")
+        await message.reply_text("Usage: /checkinfo [on/off]")
         return
   status = message.text.split(None, 1)[1].strip()
   status = status.lower()
@@ -39,5 +39,5 @@ async def vccheck(cli, message: Message, _, chat_id):
     await vc_off(chat_id)
     await message.reply_text("Disabled vc check System.")
   else:
-    await message.reply_text("Unknown Suffix, Use /checkvc [on/off]")
+    await message.reply_text("Unknown Suffix, Use /checkinfo [on/off]")
 
