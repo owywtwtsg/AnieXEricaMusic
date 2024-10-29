@@ -45,7 +45,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQ
 from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
 from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
 from pyrogram.enums import ChatType
-
+from AnieXEricaMusic.utils.database import is_vc_on, vc_on, vc_off
 
 autoend = {}
 counter = {}
@@ -636,6 +636,8 @@ class Call(PyTgCalls):
         @self.five.on_update()
         async def participant_handler(_: PyTgCalls, update: Update):
             if isinstance(update, UpdatedGroupCallParticipant):
+                if not await is_nsfw_on(update.chat.id):
+                    return
                 if update.participant.action == GroupCallParticipant.Action.JOINED:
                     try:
                         try:
