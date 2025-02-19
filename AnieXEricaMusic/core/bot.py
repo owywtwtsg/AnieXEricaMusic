@@ -24,7 +24,7 @@ class AMBOT(Client):
 
     async def start(self):
         await super().start()
-        self.id = self.me.id
+        """self.id = self.me.id
         self.name = self.me.first_name + " " + (self.me.last_name or "")
         self.username = self.me.username
         self.mention = self.me.mention
@@ -50,7 +50,7 @@ class AMBOT(Client):
                 "Please promote your bot as an admin in your log group/channel."
             )
             pass
-        LOGGER(__name__).info(f"Music Bot Started as {self.name}")
+        LOGGER(__name__).info(f"Music Bot Started as {self.name}")"""
 
     async def stop(self):
         await super().stop()
